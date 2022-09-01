@@ -1,5 +1,4 @@
 from __future__ import annotations
-from tkinter import N
 from typing import Generic, Optional, TypeVar
 
 T = TypeVar("T")
@@ -33,22 +32,16 @@ class Tree(Generic[T]):
 
 class BinarySearchTree(Tree[T]):
     def _add(self, value, node: TreeNode[T]):
-        if value >= node.value:
-            if node.right_child is None:
-                node.right_child = TreeNode(value)
-            else:
-                self._add(value, node.right_child)
+        if node is None:
+            return TreeNode(value)
+        elif value >= node.value:
+            node.right_child = self._add(value, node.right_child)
         else:
-            if node.left_child is None:
-                node.left_child = TreeNode(value)
-            else:
-                self._add(value, node.left_child)
+            node.left_child = self._add(value, node.left_child)
+        return node
 
     def add(self, value: T):
-        if self.root is None:
-            self.root = TreeNode(value)
-        else:
-            self._add(value, self.root)
+        self.root = self._add(value, self.root)
 
     def _find(self, value: T, node: TreeNode[T], parent: Optional[TreeNode[T]] = None, child_link: str = None):
         if node is None:
