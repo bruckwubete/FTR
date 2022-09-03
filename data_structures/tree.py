@@ -101,4 +101,4 @@ if __name__ == '__main__':
 
     tree.remove(3)
 
-    print(tree)
+    print("After removing 3", tree)
