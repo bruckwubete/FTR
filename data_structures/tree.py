@@ -31,28 +31,6 @@ class Tree(Generic[T]):
 
 
 class BinarySearchTree(Tree[T]):
-    def _add(self, value, node: TreeNode[T]):
-        if node is None:
-            return TreeNode(value)
-        elif value >= node.value:
-            node.right_child = self._add(value, node.right_child)
-        else:
-            node.left_child = self._add(value, node.left_child)
-        return node
-
-    def add(self, value: T):
-        self.root = self._add(value, self.root)
-
-    def _find(self, value: T, node: TreeNode[T], parent: Optional[TreeNode[T]] = None, child_link: str = None):
-        if node is None:
-            return None, None, None
-        else:
-            if node.value == value:
-                return node, parent, child_link
-            elif node.value > value:
-                return self._find(value, node.left_child, node, 'left')
-            else:
-                return self._find(value, node.right_child, node, 'right')
 
     @staticmethod
     def _dig_right(node):
@@ -61,42 +39,52 @@ class BinarySearchTree(Tree[T]):
         else:
             return BinarySearchTree._dig_right(node.right_child)
 
+    def add(self, value: T):
+        self.root = self._add(value, self.root)
+
+    def contains(self, item):
+        return self._contains(item, self.root)
+
     def remove(self, value: T):
-        node, parent, link = self._find(value, self.root, None)
+        self._remove(value, self.root)
+
+    def _add(self, value, node: TreeNode[T]) -> TreeNode[T]:
         if node is None:
-            print(f'Node with value {value} not found!')
+            node = TreeNode(value)
+        elif value >= node.value:
+            node.right_child = self._add(value, node.right_child)
         else:
-            # print(f'Found Node {node} with parent {parent} link {link}')
-            if node.left_child and node.right_child is None:
-                if parent is None:
-                    self.root = node.left_child
-                else:
-                    if link == 'left':
-                        parent.left_child = node.left_child
-                    else:
-                        parent.right_child = node.left_child
-            elif node.right_child and node.left_child is None:
-                if parent is None:
-                    self.root = node.right_child
-                else:
-                    if link == 'left':
-                        parent.left_child = node.right_child
-                    else:
-                        parent.right_child = node.right_child
-            elif node.right_child is None and node.left_child is None:
-                if link == 'left':
-                    parent.left_child = None
-                else:
-                    parent.right_child = None
+            node.left_child = self._add(value, node.left_child)
+        return node
+
+    def _remove(self, value: T, node: TreeNode[T]):
+        if node is None:
+            return None
+        elif value > node.value:
+            node.right_child = self._remove(value, node.right_child)
+        elif value < node.value:
+            node.left_child = self._remove(value, node.left_child)
+        else:
+            if node.left_child is None:
+                return node.right_child
+            elif node.right_child is None:
+                return node.left_child
             else:
-                # both left and right exist
-                n = BinarySearchTree._dig_right(node.left_child)
-                n.right_child = node.right_child
-                self.remove(n.value)
-                if link == 'left':
-                    parent.left_child = n
-                else:
-                    parent.right_child = n
+                tmp_node = BinarySearchTree._dig_right(node.left_child)
+                node.value = tmp_node.value
+                node.left_child = self._remove(node.value, node.left_child)
+
+        return node
+
+    def _contains(self, item, node):
+        if node is None:
+            return False
+        elif item == node.value:
+            return True
+        elif item < node.value:
+            return self._contains(item, node.left_child)
+        else:
+            return self._contains(item, node.right_child)
 
 
 if __name__ == '__main__':
