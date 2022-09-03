@@ -100,4 +100,5 @@ if __name__ == '__main__':
     print(tree)
 
     tree.remove(3)
+
     print(tree)
