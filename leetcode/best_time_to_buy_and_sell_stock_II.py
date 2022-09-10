@@ -1,12 +1,23 @@
 from typing import List
 
 
-def max_profit(prices: List[int]) -> int:
-    # go from back and add the ones that show some up side
-    j = len(prices) - 1
+def maxProfit(self, prices: List[int]) -> int:
+    i = 1
     profit = 0
-    while j >= 0:
-        r = prices[j + 1] - prices[j]
-        if r > 0:
-            profit += r
+    current_price = prices[0]
+    num_transactions = 0
+    unrealized_profit = 0
+    while i < len(prices):
+        if num_transactions < 2:
+            if prices[i] - current_price > 0:
+                if unrealized_profit == 0:
+                    num_transactions+=1
+                unrealized_profit += prices[i] - current_price
+            else:
+                num_transactions+=1
+                profit += unrealized_profit
+                unrealized_profit=0
+                current_price=prices[i]
+        i+=1
+
     return profit
