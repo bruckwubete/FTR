@@ -1,12 +1,12 @@
 from typing import List
+import sys
 
-
-def max_profit(prices: List[int]) -> int:
-    # go from back and add the ones that show some up side
-    j = len(prices) - 1
-    profit = 0
-    while j >= 0:
-        r = prices[j + 1] - prices[j]
-        if r > 0:
-            profit += r
-    return profit
+def maxProfit(self, prices: List[int]) -> int:
+    fs = ss = 0
+    fb = sb = ~sys.maxsize
+    for i in prices:
+        fb = max(fb, -1 * i)
+        fs = max(fs, fb + i)
+        sb = max(sb, fs - i)
+        ss = max(ss, sb + i)
+    return ss
