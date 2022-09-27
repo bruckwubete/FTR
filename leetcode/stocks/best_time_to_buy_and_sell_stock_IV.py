@@ -28,3 +28,4 @@ def max_profit(self, k: int, prices: List[int]) -> int:
     dfs(0, True)
     print(profits)
     return sum(sorted(profits, reverse=True)[:k])
+
