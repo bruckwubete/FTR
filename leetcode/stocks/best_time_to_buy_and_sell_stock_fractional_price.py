@@ -29,3 +29,4 @@ def max_profit(self, k: int, prices: List[int]) -> int:
     print(profits)
     return sum(sorted(profits, reverse=True)[:k])
 
+
