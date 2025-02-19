@@ -1,0 +1,1 @@
+[Reports The formatted result of database queries and that contains useful data for decision making and analysis.](#)
