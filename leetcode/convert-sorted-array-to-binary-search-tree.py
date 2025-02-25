@@ -17,6 +17,7 @@ class Solution:
         root.right = self.sortedArrayToBST(arr[idx+1:])
         return root
 
+
 if __name__ == '__main__':
     s = Solution()
     print(s.sortedArrayToBST([-10,-3,0,5,9]))
