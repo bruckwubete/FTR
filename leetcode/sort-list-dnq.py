@@ -1,10 +1,18 @@
+from typing import Optional
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 class Solution:
     def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         # If the head or the entire list is none, return the head
         if not head or not head.next:
             return head
         # Get the middle node
+        print('0', head)
         mid = self.getMid(head)
+        print('3', head)
         # Split the list to left and right and sort them
         left = self.sortList(head)
         right = self.sortList(mid)
